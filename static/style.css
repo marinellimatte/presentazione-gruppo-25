@@ -1,0 +1,144 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+.titolo {
+  color: #0055cc;
+  font-weight: bold;
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 40px;
+  color: #0055cc;
+  border-bottom: 2px solid #0055cc;
+  padding-bottom: 5px;
+}
+
+h3 {
+  margin-top: 20px;
+  color: #333;
+}
+
+.lista-titoli {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.lista-titoli li {
+  padding: 8px 0;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.lista-titoli li strong {
+  color: #0055cc;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background-color: #0055cc;
+  color: white;
+}
+
+.selector-row {
+  margin: 20px 0;
+}
+
+select {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.grafico-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.grafico-card {
+  flex: 1 1 30%;
+  margin: 10px;
+  text-align: center;
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.05);
+}
+
+.grafico-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.grafico-title {
+  font-weight: bold;
+  color: #0055cc;
+  margin-bottom: 5px;
+}
+
+.grafico-globale {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.grafico-globale img {
+  max-width: 800px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .grafico-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .grafico-card {
+    flex: 1 1 100%;
+    max-width: 90%;
+  }
+
+  .grafico-globale img {
+    max-width: 100%;
+  }
+}

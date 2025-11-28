@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Analisi FTSE MIB</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1 class="titolo">Analisi 10 titoli FTSE MIB</h1>
+
+    <h2>Lista dei titoli analizzati</h2>
+    <ul class="lista-titoli">
+      {% for ticker, nome in titoli %}
+        <li><strong>{{ ticker }}</strong> — {{ nome }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Statistiche descrittive dei rendimenti</h2>
+    <div class="table-container">
+      {{ stats|safe }}
+    </div>
+
+    <h2>Distribuzione KDE Rendimenti</h2>
+    <div class="grafico-globale">
+      <img src="{{ url_for('static', filename='grafici/kde_rendimenti.png') }}" style="width:80%;">
+    </div>
+
+    <h2>Visualizza grafici per singolo titolo</h2>
+    <div class="selector-row">
+      <label for="menuTitoli"><strong>Seleziona titolo:</strong></label>
+      <select id="menuTitoli" onchange="mostraGrafici(this.value)">
+        <option value="">-- Seleziona --</option>
+        {% for ticker, nome in titoli %}
+          <option value="{{ ticker }}">{{ nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="grafici">
+      {% for ticker, nome in titoli %}
+      <div id="grafico_{{ ticker }}" class="grafico" style="display:none;">
+        <h3>{{ nome }} ({{ ticker }})</h3>
+        <div class="grafico-row">
+          <div class="grafico-card">
+            <div class="grafico-title">Prezzi</div>
+            <img src="{{ url_for('static', filename='grafici/' + ticker + '_prezzi.png') }}">
+          </div>
+          <div class="grafico-card">
+            <div class="grafico-title">Istogramma + Normale</div>
+            <img src="{{ url_for('static', filename='grafici/' + ticker + '_istogramma.png') }}">
+          </div>
+          <div class="grafico-card">
+            <div class="grafico-title">Boxplot</div>
+            <img src="{{ url_for('static', filename='grafici/' + ticker + '_boxplot.png') }}">
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h2>Grafico rendimenti cumulati</h2>
+    <div class="grafico-globale">
+      <img src="{{ url_for('static', filename='grafici/rendimenti_cumulati.png') }}">
+    </div>
+
+    <h2>Heatmap delle correlazioni</h2>
+    <div class="grafico-globale">
+      <img src="{{ url_for('static', filename='grafici/heatmap_correlazioni.png') }}">
+    </div>
+
+  </div>
+
+  <script>
+    function mostraGrafici(titolo) {
+      document.querySelectorAll('.grafico').forEach(div => div.style.display = 'none');
+      if (titolo) {
+        const target = document.getElementById('grafico_' + titolo);
+        if (target) target.style.display = 'block';
+      }
+    }
+  </scri
+
