@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -9,33 +10,23 @@
 <body>
   <div class="container">
 
-    <h1 class="titolo">Analisi 10 titoli FTSE MIB</h1>
+    <h1>Analisi 10 titoli FTSE MIB</h1>
 
-    <!-- LISTA TITOLI -->
-    <h2>Lista dei titoli analizzati</h2>
-    <ul class="lista-titoli">
+    <h2>Lista titoli analizzati</h2>
+    <ul>
       {% for ticker, nome in titoli %}
         <li><strong>{{ ticker }}</strong> — {{ nome }}</li>
       {% endfor %}
     </ul>
 
-    <!-- STATISTICHE -->
-    <h2>Statistiche descrittive dei rendimenti</h2>
-    <div class="table-container">
-      {{ stats|safe }}
-    </div>
+    <h2>Statistiche descrittive</h2>
+    <div class="table-container">{{ stats|safe }}</div>
 
-    <!-- KDE -->
-    <h2>Distribuzione KDE Rendimenti</h2>
-    <div class="grafico-globale">
-      <img src="{{ url_for('static', filename='grafici/kde_rendimenti.png') }}" style="width:80%;">
-    </div>
+    <h2>Distribuzione KDE</h2>
+    <img src="/static/grafici/kde_rendimenti.png" class="big">
 
-    <!-- SELECT TITOLI -->
-    <h2>Visualizza grafici per singolo titolo</h2>
-
-    <label for="menuTitoli"><strong>Seleziona titolo:</strong></label>
-    <select id="menuTitoli" onchange="location.href='/?titolo=' + this.value;">
+    <h2>Seleziona un titolo</h2>
+    <select onchange="location.href='/?titolo=' + this.value;">
       {% for ticker, nome in titoli %}
         <option value="{{ ticker }}" {% if selected == ticker %}selected{% endif %}>
           {{ nome }}
@@ -43,43 +34,35 @@
       {% endfor %}
     </select>
 
-    <!-- GRAFICI SINGOLO TITOLO -->
     <h2>{{ NOMI_COMPLETI[selected] }} ({{ selected }})</h2>
 
     <div class="grafico-row">
-
       <div class="grafico-card">
-        <div class="grafico-title">Prezzi</div>
+        <h3>Prezzi</h3>
         <img src="{{ prezzo }}">
       </div>
 
       <div class="grafico-card">
-        <div class="grafico-title">Istogramma + Normale</div>
+        <h3>Istogramma</h3>
         <img src="{{ istogramma }}">
       </div>
 
       <div class="grafico-card">
-        <div class="grafico-title">Boxplot</div>
+        <h3>Boxplot</h3>
         <img src="{{ boxplot }}">
       </div>
-
     </div>
 
-    <!-- CUMULATI -->
-    <h2>Grafico rendimenti cumulati</h2>
-    <div class="grafico-globale">
-      <img src="{{ url_for('static', filename='grafici/rendimenti_cumulati.png') }}">
-    </div>
+    <h2>Rendimenti cumulati</h2>
+    <img src="/static/grafici/rendimenti_cumulati.png" class="big">
 
-    <!-- CORRELAZIONI -->
-    <h2>Heatmap delle correlazioni</h2>
-    <div class="grafico-globale">
-      <img src="{{ url_for('static', filename='grafici/heatmap_correlazioni.png') }}">
-    </div>
+    <h2>Heatmap correlazioni</h2>
+    <img src="/static/grafici/heatmap_correlazioni.png" class="big">
 
   </div>
 </body>
 </html>
+
 
 
 
