@@ -1,75 +1,62 @@
-/* Titoli di sezione */
-.section-title {
-  font-size: 26px;
-  font-weight: 700;
-  margin: 35px 0 15px;
-  border-left: 6px solid #007bff;
-  padding-left: 12px;
-}
-
-/* Cards per lista titoli */
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.ticker-card {
-  background: white;
-  padding: 15px 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  width: 180px;
-  transition: transform 0.15s ease-in-out;
-}
-
-.ticker-card:hover {
-  transform: translateY(-4px);
-}
-
-.ticker-symbol {
-  font-weight: 700;
-  color: #007bff;
-  font-size: 18px;
-}
-
-.ticker-name {
-  font-size: 15px;
-  color: #444;
-  margin-top: 5px;
-}
-
-/* Tabella stats */
+/* WRAPPER */
 .table-wrapper {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-  overflow-x: auto;
+  padding: 0;
+  margin-top: 25px;
+  border-radius: 10px;
+  box-shadow: 0 3px 9px rgba(0,0,0,0.12);
+  overflow: hidden;
+  width: 100%;
 }
 
-/* Tabella bootstrap-like */
+/* TABELLA */
 .table-wrapper table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
-  text-align: left;
+  font-size: 16px;
+  text-align: center;
 }
 
-.table-wrapper th {
-  background: #007bff;
+/* INTESTAZIONI */
+.table-wrapper thead th {
+  background-color: #0057d9;
   color: white;
-  padding: 8px;
+  padding: 12px 10px;
+  font-weight: 600;
+  border-right: 1px solid #fff3;
 }
 
-.table-wrapper td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+/* PRIMA COLONNA */
+.table-wrapper tbody td:first-child {
+  background-color: #0057d9;
+  color: white;
+  font-weight: 700;
+  width: 130px;
 }
 
-.table-wrapper tr:hover {
-  background: #f1f7ff;
+/* ALTRE CELLE */
+.table-wrapper tbody td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+/* RIGHE ALTERNATE */
+.table-wrapper tbody tr:nth-child(even) td:not(:first-child) {
+  background: #f5f7ff;
+}
+
+/* HOVER SU RIGHE */
+.table-wrapper tbody tr:hover td:not(:first-child) {
+  background: #eaf1ff;
+}
+
+/* BORDER RADIUS PER LA PARTE ALTA */
+.table-wrapper thead th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.table-wrapper thead th:last-child {
+  border-top-right-radius: 10px;
 }
 
 
