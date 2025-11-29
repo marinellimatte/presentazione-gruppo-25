@@ -7,7 +7,7 @@ from scipy.stats import jarque_bera
 from flask import Flask, render_template, request
 import os
 
-# === LISTA TITOLI E NOMI COMPLETI ===
+# === LISTA TITOLI E NOMI ===
 TITOLI_FTSEMIB = [
     "UCG.MI", "ISP.MI", "ENEL.MI", "RACE.MI", "G.MI",
     "ENI.MI", "PRY.MI", "PST.MI", "LDO.MI", "BMPS.MI"
@@ -26,7 +26,7 @@ NOMI_COMPLETI = {
     "BMPS.MI": "Banca MPS"
 }
 
-# === FUNZIONI ===
+# === FUNZIONI ANALISI ===
 def scarica_dati_ftse(titoli, data_inizio="2019-01-01"):
     prezzi = pd.DataFrame()
     for ticker in titoli:
@@ -41,28 +41,27 @@ def calcola_rendimenti(prezzi):
     return rendimenti, rendimenti_log
 
 def statistiche_rendimenti(rendimenti):
+    stats = pd.DataFrame()
+    stats["Min"] = rendimenti.min()
+    stats["Max"] = rendimenti.max()
+    stats["Media"] = rendimenti.mean()
+    stats["StdDev"] = rendimenti.std()
+
     moda_vals = []
     for col in rendimenti.columns:
         m = rendimenti[col].mode()
-        moda_vals.append(m.iloc[0] if len(m) > 0 else np.nan)
+        moda_vals.append(m.iloc[0] if len(m) else np.nan)
+    stats["Moda"] = moda_vals
 
-    stats = pd.DataFrame({
-        "Min": rendimenti.min(),
-        "Max": rendimenti.max(),
-        "Moda": moda_vals,
-        "Media": rendimenti.mean(),
-        "StdDev": rendimenti.std()
-    }, index=rendimenti.columns)
-
-    jb_results = {}
+    jb = {}
     for col in rendimenti.columns:
-        stat, p = jarque_bera(rendimenti[col])
-        jb_results[col] = p
+        _, p = jarque_bera(rendimenti[col])
+        jb[col] = p
+    stats["Jarque-Bera p-value"] = pd.Series(jb)
 
-    stats["Jarque-Bera p-value"] = pd.Series(jb_results)
     return stats
 
-# === SETUP FLASK ===
+# === INIZIO APP ===
 app = Flask(__name__)
 
 prezzi = scarica_dati_ftse(TITOLI_FTSEMIB)
@@ -73,10 +72,12 @@ correlazioni = rendimenti.corr()
 grafici_dir = "static/grafici"
 os.makedirs(grafici_dir, exist_ok=True)
 
-# === GENERA GRAFICI (UNA VOLTA SOLA) ===
+print("Generazione grafici...")
+
+# GENERA GRAFICI UNA VOLTA
 for ticker in TITOLI_FTSEMIB:
+    safe = ticker.replace(".", "_")
     nome = NOMI_COMPLETI[ticker]
-    ticker_safe = ticker.replace(".", "_")
 
     data = rendimenti[ticker].dropna()
     mu, sigma = data.mean(), data.std()
@@ -86,18 +87,18 @@ for ticker in TITOLI_FTSEMIB:
     plt.plot(prezzi.index, prezzi[ticker])
     plt.title(f"Andamento prezzi {nome}")
     plt.tight_layout()
-    plt.savefig(f"{grafici_dir}/{ticker_safe}_prezzi.png")
+    plt.savefig(f"{grafici_dir}/{safe}_prezzi.png")
     plt.close()
 
     # Istogramma
     plt.figure(figsize=(6,4))
     plt.hist(data, bins=50, density=True, alpha=0.6)
     x_vals = np.linspace(data.min(), data.max(), 300)
-    normal_curve = (1 / (sigma * np.sqrt(2*np.pi))) * np.exp(-0.5*((x_vals - mu) / sigma)**2)
+    normal_curve = (1/(sigma*np.sqrt(2*np.pi))) * np.exp(-0.5*((x_vals - mu)/sigma)**2)
     plt.plot(x_vals, normal_curve, linewidth=2)
-    plt.title(f"Istogramma rendimenti {nome}")
+    plt.title(f"Istogramma {nome}")
     plt.tight_layout()
-    plt.savefig(f"{grafici_dir}/{ticker_safe}_istogramma.png")
+    plt.savefig(f"{grafici_dir}/{safe}_istogramma.png")
     plt.close()
 
     # Boxplot
@@ -105,10 +106,10 @@ for ticker in TITOLI_FTSEMIB:
     sns.boxplot(y=data)
     plt.title(f"Boxplot {nome}")
     plt.tight_layout()
-    plt.savefig(f"{grafici_dir}/{ticker_safe}_boxplot.png")
+    plt.savefig(f"{grafici_dir}/{safe}_boxplot.png")
     plt.close()
 
-# KDE globale
+# KDE
 plt.figure(figsize=(14,6))
 for t in rendimenti_log.columns:
     sns.kdeplot(rendimenti_log[t].dropna(), label=NOMI_COMPLETI[t])
@@ -127,39 +128,30 @@ plt.tight_layout()
 plt.savefig(f"{grafici_dir}/rendimenti_cumulati.png")
 plt.close()
 
-# Heatmap correlazioni
+# Heatmap
 plt.figure(figsize=(8,6))
-sns.heatmap(correlazioni, annot=True, cmap="coolwarm")
+sns.heatmap(correlazioni, annot=True, cmap="coolwarm", fmt=".2f")
 plt.tight_layout()
 plt.savefig(f"{grafici_dir}/heatmap_correlazioni.png")
 plt.close()
 
-
-# === ROUTE PRINCIPALE ===
+# === ROUTE ===
 @app.route("/")
 def index():
     selected = request.args.get("titolo", TITOLI_FTSEMIB[0])
-    ticker_safe = selected.replace(".", "_")
+    safe = selected.replace(".", "_")
 
     return render_template(
         "index.html",
         titoli=[(t, NOMI_COMPLETI[t]) for t in TITOLI_FTSEMIB],
+        NOMI_COMPLETI=NOMI_COMPLETI,
         selected=selected,
-        prezzo=f"{ticker_safe}_prezzi.png",
-        istogramma=f"{ticker_safe}_istogramma.png",
-        boxplot=f"{ticker_safe}_boxplot.png",
+        prezzo=f"/static/grafici/{safe}_prezzi.png",
+        istogramma=f"/static/grafici/{safe}_istogramma.png",
+        boxplot=f"/static/grafici/{safe}_boxplot.png",
         stats=stats.round(4).to_html(classes="table table-striped", border=0)
     )
-
-
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
-
-
-
-
-
