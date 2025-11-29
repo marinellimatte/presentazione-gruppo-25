@@ -12,15 +12,23 @@
 
     <h1>Analisi 10 titoli FTSE MIB</h1>
 
-    <h2>Lista titoli analizzati</h2>
-    <ul>
-      {% for ticker, nome in titoli %}
-        <li><strong>{{ ticker }}</strong> — {{ nome }}</li>
-      {% endfor %}
-    </ul>
+<h2 class="section-title">Lista titoli analizzati</h2>
 
-    <h2>Statistiche descrittive</h2>
-    <div class="table-container">{{ stats|safe }}</div>
+<div class="cards-container">
+  {% for ticker, nome in titoli %}
+    <div class="ticker-card">
+      <div class="ticker-symbol">{{ ticker }}</div>
+      <div class="ticker-name">{{ nome }}</div>
+    </div>
+  {% endfor %}
+</div>
+
+<h2 class="section-title">Statistiche descrittive</h2>
+
+<div class="table-wrapper">
+  {{ stats|safe }}
+</div>
+
 
     <h2>Distribuzione KDE</h2>
     <img src="/static/grafici/kde_rendimenti.png" class="big">
@@ -62,6 +70,7 @@
   </div>
 </body>
 </html>
+
 
 
 
