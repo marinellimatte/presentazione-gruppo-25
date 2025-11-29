@@ -38,29 +38,38 @@
     </div>
 
     <div id="grafici">
+
       {% for ticker, nome in titoli %}
+      {% set t_safe = ticker.replace('.', '_') %}
+
       <div id="grafico_{{ ticker }}" class="grafico" style="display:none;">
         <h3>{{ nome }} ({{ ticker }})</h3>
+
         <div class="grafico-row">
+
           <div class="grafico-card">
             <div class="grafico-title">Prezzi</div>
-            <img src="{{ url_for('static', filename='grafici/' + ticker + '_prezzi.png') }}">
+            <img src="{{ url_for('static', filename='grafici/' + t_safe + '_prezzi.png') }}">
           </div>
+
           <div class="grafico-card">
             <div class="grafico-title">Istogramma + Normale</div>
-            <img src="{{ url_for('static', filename='grafici/' + ticker + '_istogramma.png') }}">
+            <img src="{{ url_for('static', filename='grafici/' + t_safe + '_istogramma.png') }}">
           </div>
+
           <div class="grafico-card">
             <div class="grafico-title">Boxplot</div>
-            <img src="{{ url_for('static', filename='grafici/' + ticker + '_boxplot.png') }}">
+            <img src="{{ url_for('static', filename='grafici/' + t_safe + '_boxplot.png') }}">
           </div>
+
         </div>
       </div>
       {% endfor %}
+
     </div>
 
     <h2>Grafico rendimenti cumulati</h2>
-    <div class="grafico-globale">
+    <dv>iv class="grafico-globale">
       <img src="{{ url_for('static', filename='grafici/rendimenti_cumulati.png') }}">
     </div>
 
@@ -69,7 +78,7 @@
       <img src="{{ url_for('static', filename='grafici/heatmap_correlazioni.png') }}">
     </div>
 
-  </div>
+  </di
 
   <script>
     function mostraGrafici(titolo) {
@@ -79,5 +88,9 @@
         if (target) target.style.display = 'block';
       }
     }
-  </scri
+  </script>
+
+</body>
+</html>
+
 
