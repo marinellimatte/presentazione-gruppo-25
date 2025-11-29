@@ -1,63 +1,75 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f7f7f7;
-  padding: 20px;
-  margin: 0;
+/* Titoli di sezione */
+.section-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 35px 0 15px;
+  border-left: 6px solid #007bff;
+  padding-left: 12px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-}
-
-h1, h2, h3 {
-  font-weight: 600;
-}
-
-.table-container {
-  overflow-x: auto;
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.grafico-row {
+/* Cards per lista titoli */
+.cards-container {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-.grafico-card {
-  flex: 1 1 30%;
+.ticker-card {
   background: white;
-  padding: 10px;
+  padding: 15px 20px;
   border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  width: 180px;
+  transition: transform 0.15s ease-in-out;
 }
 
-.grafico-card img {
+.ticker-card:hover {
+  transform: translateY(-4px);
+}
+
+.ticker-symbol {
+  font-weight: 700;
+  color: #007bff;
+  font-size: 18px;
+}
+
+.ticker-name {
+  font-size: 15px;
+  color: #444;
+  margin-top: 5px;
+}
+
+/* Tabella stats */
+.table-wrapper {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  overflow-x: auto;
+}
+
+/* Tabella bootstrap-like */
+.table-wrapper table {
   width: 100%;
-  border-radius: 5px;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
 }
 
-.big {
-  width: 80%;
-  display: block;
-  margin: 20px auto;
+.table-wrapper th {
+  background: #007bff;
+  color: white;
+  padding: 8px;
 }
 
-select {
-  padding: 8px 12px;
-  font-size: 16px;
-  border-radius: 6px;
-  margin-bottom: 20px;
+.table-wrapper td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
 }
 
-ul {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+.table-wrapper tr:hover {
+  background: #f1f7ff;
 }
+
 
